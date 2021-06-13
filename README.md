@@ -9,6 +9,12 @@ Overview
 --------
 This is a simple container that performs a mongodump, then uploads the file to an azure blob store.  In the future it will be extended for more targets, but the goal is to use it simply with Kubernetes CronJob tasks to automate backups of small mongodb clusters.
 
+Updating Container
+------------------
+To update the container image:
+docker build -t ghcr.io/qwerty-iot/mongodb-backup:<version>
+docker push ghcr.io/qwerty-iot/mongodb-backup:<version>
+
 License
 -------
 
