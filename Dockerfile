@@ -10,8 +10,8 @@ RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mon
 
 RUN apt update && apt install -y azure-cli mongodb-database-tools mongodb-org-shell
 
-COPY backup.sh /root/backup.sh
+COPY run.sh /root/run.sh
 
 WORKDIR /root/
 
-CMD ["sh","./backup.sh"]
+CMD ["sh","./run.sh"]
