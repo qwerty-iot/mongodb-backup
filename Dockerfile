@@ -14,4 +14,4 @@ COPY run.sh /root/run.sh
 
 WORKDIR /root/
 
-CMD ["sh","./run.sh"]
+CMD ["bash","./run.sh"]
