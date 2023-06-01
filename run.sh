@@ -14,15 +14,19 @@ if [ "${TASK}" = "restore" ]; then
 	
   az storage blob download --no-progress --container-name ${AZURE_CONTAINER} -n=${RESTORENAME} -f ./restore.tar.gz --connection-string="${AZURE_CONNSTRING}"
 	
-  mongorestore --uri=${MONGO_URI} --authenticationDatabase=admin --gzip --archive="restore.tar.gz" --drop -v
+  mongorestore --uri=${MONGO_URI} --authenticationMechanism=SCRAM-SHA-256 --authenticationDatabase=admin --gzip --archive="restore.tar.gz" --drop -v
 else
 # implied backup
 
   DATE=`date +%Y%m%d-%H%M`
   BACKUPNAME="${BACKUP_PREFIX}-${DATE}.tar.gz"
 
-  mongodump --uri=${MONGO_URI} --db=${MONGO_DB} --authenticationDatabase=admin --readPreference=primary --gzip --archive="backup.tar.gz"
-
+  mongodump --uri=${MONGO_URI} --db=${MONGO_DB} --authenticationMechanism=SCRAM-SHA-256 --authenticationDatabase=admin --readPreference=primary --gzip --archive="backup.tar.gz"
+  RC=$?
+  if [ "$check" -ne "0" ]; then
+    echo "mongodump failed: $RC"
+    exit $RC
+  fi
   az storage blob upload --container-name ${AZURE_CONTAINER} -n=${BACKUPNAME} -f ./backup.tar.gz --connection-string="${AZURE_CONNSTRING}"
 fi
 
